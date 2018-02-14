@@ -7,6 +7,8 @@ const swaggerTools = require('swagger-tools');
 const jsyaml = require('js-yaml');
 const serverConfig = require('./infrastructure/server.config');
 const bodyParser = require('body-parser');
+const auth = require('basic-auth');
+const basicAuth = require('./api/security/basicAuthHeader');
 
 app.use(bodyParser.json({ 'type': '*/*',limit: '20mb' }));
 
@@ -14,7 +16,21 @@ app.use(bodyParser.json({ 'type': '*/*',limit: '20mb' }));
 module.exports = app;
 
 let config = {
-  appRoot: __dirname
+  appRoot: __dirname,
+  swaggerSecurityHandlers: {
+    BasicAuth: function (req, authOrSecDef, scopesOrApiKey, callback) {
+      let credenciais = auth(req);     
+      if (credenciais !== undefined && credenciais !== null) {  
+        let authValid = basicAuth.validate(credenciais.name, credenciais.pass);
+        if (authValid)
+          callback()        
+        else
+          callback(new Error('access denied!'));
+      } else {
+        callback(new Error('access denied!'));
+      }
+    } 
+  }
 };
 
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)

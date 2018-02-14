@@ -7,6 +7,12 @@ info:
       email: leandromartins@locamerica.com.br
 host: localhost:8000
 basePath: /v1
+securityDefinitions:
+  BasicAuth:
+    type: basic
+    
+security:
+  - BasicAuth: []  
 schemes:
   - http
 consumes:
