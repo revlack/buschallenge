@@ -1,0 +1,28 @@
+{
+  "name": "gerencia-lock",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Serviços auxiliares",
+  "keywords": [],
+  "author": "Leandro Ventura",
+  "license": "",
+  "instance_var": "INSTANCE_ID",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.12.3",
+    "js-yaml": "^3.3.0",
+    "mssql": "^4.0.1",
+    "nodemon": "^1.11.0",
+    "swagger-express-mw": "^0.1.0",
+    "swagger-tools": "0.10.1"
+  },
+  "devDependencies": {
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
+  }
+}

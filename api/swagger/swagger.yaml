@@ -1,0 +1,42 @@
+swagger: "2.0"
+info:
+  version: 0.0.2
+  title: Serviços Auxiliares
+  description: Serviços Auxiliares Locamerica
+  contact: 
+      email: leandromartins@locamerica.com.br
+host: localhost:8000
+basePath: /v1
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:   
+
+  /home/:
+    x-swagger-router-controller: apiController
+    get:
+      tags:
+      - "API" 
+      description: Verifica Api Ativa
+      operationId: processaHome 
+      responses:
+        200:
+          description: Objeto de orçamento
+          schema:
+            $ref: "#/definitions/inline_response_200"             
+#################################################################################
+#                       API de BusChallenge                                     #
+#################################################################################           
+
+definitions:
+#################################################################################
+#                                   RESPONSE                                    #
+#################################################################################
+
+  inline_response_200:
+    type: object
+
+    
