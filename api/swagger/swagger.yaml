@@ -7,12 +7,6 @@ info:
       email: leandromartins@locamerica.com.br
 host: localhost:8000
 basePath: /v1
-securityDefinitions:
-  BasicAuth:
-    type: basic
-    
-security:
-  - BasicAuth: []  
 schemes:
   - http
 consumes:
@@ -35,7 +29,27 @@ paths:
             $ref: "#/definitions/inline_response_200"             
 #################################################################################
 #                       API de BusChallenge                                     #
-#################################################################################           
+#################################################################################    
+  /users:
+    x-swagger-router-controller: passageiroController
+    post:
+        tags:
+          - "Passageiro"
+        summary: Cadatro
+        description: Grava Passageiro (Usuario)
+        operationId: addPassageiro
+        parameters:
+          - in: body
+            name: body
+            description: Objeto novo Passageiro
+            required: true
+            schema:
+              $ref: '#/definitions/bodyRequest'    
+        responses:
+          200:
+            description: Sucesso
+            schema:
+              $ref: '#/definitions/inline_response_200'  
 
 definitions:
 #################################################################################
@@ -44,5 +58,9 @@ definitions:
 
   inline_response_200:
     type: object
+    
+  bodyRequest:
+    type: object
+      
 
     
