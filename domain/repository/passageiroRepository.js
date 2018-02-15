@@ -27,7 +27,7 @@ class passageiroRepository {
                                             .query("SELECT  [codigoPassageiro] ,[nome] ,[email] ,[cardID],[senha] ,[InseridoEm] FROM Passageiro WHERE  codigoPassageiro"
                                             +" = @codigoPassageiro");       
                                             
-                 return result.recordset;
+                 return result.recordset[0];
           
     }
 
@@ -37,7 +37,7 @@ class passageiroRepository {
                                             .input('email', mssql.NVarChar, email)                      
                                             .query("SELECT  [codigoPassageiro] ,[nome] ,[email] ,[cardID],[senha] ,[InseridoEm] FROM Passageiro WHERE  email =  @email");       
                                             
-                 return result.recordset;
+                 return result.recordset[0];
           
     }
 
@@ -47,7 +47,7 @@ class passageiroRepository {
                 let result = await connection.request()  
                                             .input('cardID', mssql.NVarChar, cardID)                      
                                             .query("SELECT  [codigoPassageiro] ,[nome] ,[email] ,[cardID],[senha] ,[InseridoEm] FROM Passageiro WHERE cardID = @cardID"); 
-                 return result.recordset;
+                 return result.recordset[0];
           
     }
 }

@@ -25,7 +25,7 @@ class linhaRepository {
                                             .query("SELECT  [codigoLinha] ,[nome] ,[code] FROM Linha WHERE  codigoLinha"
                                             +" = @codigoLinha");       
                                             
-                 return result.recordset;
+                 return result.recordset[0];
           
     }
 
@@ -33,10 +33,10 @@ class linhaRepository {
     async getLinhaByCode(code) {                
         
                 let result = await connection.request()  
-                .input('codigoLinha', mssql.BigInt, codigoLinha)                      
+                .input('code', mssql.NVarChar, code)                      
                 .query("SELECT  [codigoLinha] ,[nome] ,[code] FROM Linha WHERE  code"
                 +" = @code");                                                      
-                 return result.recordset;
+                 return result.recordset[0];
           
     }
     

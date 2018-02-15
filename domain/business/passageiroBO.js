@@ -8,7 +8,7 @@ exports.addPassageiro = async function(body) {
     let _pass = await passageiroRepo.getPassageiroByCard(body.cardId);
     let _pass2 = await passageiroRepo.getPassageiroByEmail(body.email);
 
-    if(_pass[0] || _pass2[0]){
+    if(_pass.cardID || _pass2.email){
         var err = new Error('Usuário já cadastrado para esse card ou e-mail');
         throw err;
     }

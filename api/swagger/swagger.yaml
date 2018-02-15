@@ -28,7 +28,7 @@ paths:
           schema:
             $ref: "#/definitions/inline_response_200"             
 #################################################################################
-#                       API de BusChallenge                                     #
+#                       API de BusChallenge  - Usuarios                         #
 #################################################################################    
   /users:
     x-swagger-router-controller: passageiroController
@@ -51,16 +51,71 @@ paths:
             schema:
               $ref: '#/definitions/inline_response_200'  
 
-definitions:
+#################################################################################
+#                       API de BusChallenge  - Débitos                          #
+#################################################################################   
+
+  /debits:
+    x-swagger-router-controller: lancamentoController
+    post:
+        tags:
+          - "Passageiro"
+        summary: Cadatro
+        description: Grava Lancamento de Débito
+        operationId: addDebito
+        parameters:
+          - in: body
+            name: body
+            description: Objeto novo de Débito
+            required: true
+            schema:
+              $ref: '#/definitions/bodyRequest'    
+        responses:
+          200:
+            description: Sucesso
+            schema:
+              $ref: '#/definitions/inline_response_200'           
+    get:
+      tags:
+      - "debits" 
+      summary: Busca
+      description: Retorna array de lançamentos
+      operationId: getLancamentosDebitos
+      parameters:
+        - in: query
+          name: initialDate
+          type: string
+          required: false     
+        - in: query
+          name: finalDate
+          type: string
+          required: false             
+        - in: query
+          name: cardId
+          type: string
+          required: false     
+      responses:
+        200:
+          description: Sucesso
+          schema:
+            $ref: "#/definitions/arrayResponseDebitos"   
+
 #################################################################################
 #                                   RESPONSE                                    #
 #################################################################################
+definitions:
 
   inline_response_200:
     type: object
-    
-  bodyRequest:
-    type: object
-      
 
-    
+  bodyRequest:
+    type: object      
+
+  arrayResponseDebitos:
+    properties:
+      id:
+        type: string
+      debitedAt:
+        type: string
+      value:
+        type: integer

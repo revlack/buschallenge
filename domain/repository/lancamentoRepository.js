@@ -12,7 +12,7 @@ class lancamentoRepository {
                                     .input('codigoLinha', mssql.Int, lancamento.codigoLinha)   
                                     .input('codigoUnidade', mssql.Int, lancamento.codigoUnidade)   
                                     .input('valor', mssql.Decimal, lancamento.valor) 
-                                    .query("INSERT INTO [Lancamento] ([codigoPassageiro] ,[codigoLinha] ,[codigoUnidade],[InseridoEm],[valor]) VALUES "
+                                    .query("INSERT INTO [Lancamento] ([codigoPassageiro] ,[codigoLinha] ,[codigoUnidade],[dataLancamento],[valor]) VALUES "
                                     +"(@codigoPassageiro, @codigoLinha, @codigoUnidade, getdate(), @valor )");       
                                     
          return result.recordset;
@@ -26,22 +26,32 @@ class lancamentoRepository {
                 let result = await connection.request()  
                                             .input('codigoPassageiro', mssql.BigInt, codigoPassageiro)                      
                                             .input('data', mssql.DateTime, data)  
-                                            .query("SELECT SUM(valor)  FROM Lancamento WHERE  codigoPassageiro"
+                                            .query("SELECT SUM(valor) saldo FROM Lancamento WHERE  codigoPassageiro"
                                             +" = @codigoPassageiro AND dataLancamento <= @data ");   
-                    return result.recordset;    
+
+                                            if(result.recordset[0].saldo){
+                                                return result.recordset[0].saldo;   
+                                            }else{
+                                                return null;
+                                            }
 
                 }else{
 
                     let result = await connection.request()  
                     .input('codigoPassageiro', mssql.BigInt, codigoPassageiro)                      
-                    .query("SELECT SUM(valor)  FROM Lancamento WHERE  codigoPassageiro"
+                    .query("SELECT SUM(valor) saldo FROM Lancamento WHERE  codigoPassageiro"
                     +" = @codigoPassageiro AND dataLancamento <= getdate() ");   
 
-                    return result.recordset;   
-                }                                         
+                    if(result.recordset[0].saldo){
+                        return result.recordset[0].saldo;   
+                    }else{
+                        return null;
+                    }
+                  
+                }                                        
           
     }      
-    
+
     async getLancamentosByCodigoPassageiro(codigoPassageiro, dataInicio = null, dataFim = null) {               
         
                   if(dataInicio && dataFim){
@@ -63,7 +73,20 @@ class lancamentoRepository {
                             return result.recordset;   
                         }                                         
                   
-            }      
+            }
+            
+            
+    
+          async getLancamentosDebitos (dataInicio, dataFim, cardId){
+        
+                let result = await connection.request()
+                .input('dataInicio', mssql.DateTime, dataInicio)
+                .input('dataFim', mssql.DateTime, dataFim)
+                .input('cardId', mssql.NVarChar, cardId)
+                .execute("GET_LancamentosDebitos");
+        
+                return result.recordset;
+            }
 }
 
 module.exports = lancamentoRepository;

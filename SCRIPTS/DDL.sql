@@ -69,3 +69,22 @@ GO
 ALTER TABLE [dbo].[Lancamento]  WITH CHECK ADD  CONSTRAINT [FK_Lancamento_FK_Unidade] FOREIGN KEY([codigoUnidade])
 REFERENCES [dbo].[Unidade] ([codigoUnidade])
 GO
+
+
+CREATE PROCEDURE [dbo].[GET_LancamentosDebitos] (
+		 @dataInicio datetime = NULL
+		,@dataFim datetime = NULL,
+		@cardId NVARCHAR(255) = NULL
+	)
+AS
+BEGIN
+		SELECT Lancamento.codigoLancamento [id], Lancamento.dataLancamento [debitedAt], Lancamento.valor [value]  FROM Lancamento
+		join Passageiro on Lancamento.codigoPassageiro = Passageiro.codigoPassageiro
+		WHERE 
+		(@dataInicio is NULL  OR  dataLancamento >= @dataInicio)
+		and 
+		(@dataFim is NULL  OR  dataLancamento <= @dataFim)
+		and 
+		(@cardId is NULL  OR  Passageiro.cardID = @cardId)
+END
+			
