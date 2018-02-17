@@ -34,5 +34,3 @@ node_modules
 config/runtime.yaml
 
 #teste
-infrastructure/server.config.js
-infrastructure/mssql.database.js

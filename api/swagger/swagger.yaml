@@ -1,10 +1,10 @@
 swagger: "2.0"
 info:
   version: 0.0.2
-  title: Serviços Auxiliares
-  description: Serviços Auxiliares Locamerica
+  title: Buschallange
+  description: Buschallange
   contact: 
-      email: leandromartins@locamerica.com.br
+      email: ventura.leandro@gmail.com
 host: localhost:8000
 basePath: /v1
 schemes:
@@ -13,6 +13,13 @@ consumes:
   - application/json
 produces:
   - application/json
+    
+securityDefinitions:
+  BasicAuth:
+    type: basic
+    
+security:
+  - BasicAuth: []    
 paths:   
 
   /home/:
@@ -42,6 +49,24 @@ paths:
           - in: body
             name: body
             description: Objeto novo Passageiro
+            required: true
+            schema:
+              $ref: '#/definitions/bodyRequest'    
+        responses:
+          200:
+            description: Sucesso
+            schema:
+              $ref: '#/definitions/inline_response_200'  
+    delete:
+        tags:
+          - "Passageiro"
+        summary: deleta usuario
+        description: deleta Passageiro (Usuario)
+        operationId: delPassageiro
+        parameters:
+          - in: body
+            name: body
+            description: Card do Passageiro
             required: true
             schema:
               $ref: '#/definitions/bodyRequest'    

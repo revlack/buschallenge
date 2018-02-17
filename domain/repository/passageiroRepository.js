@@ -18,6 +18,18 @@ class passageiroRepository {
          return result.recordset;
   
     }   
+
+    async deletarByCardId(cardID) {                
+
+        let result = await connection.request()    
+                            .input('cardID', mssql.NVarChar, cardID)                               
+                            .query("delete from [Passageiro] where  cardID = "
+                            +"@cardID");      
+                            
+        return result.recordset;
+
+    }   
+
     
      
     async getPassageiroByID(codigoPassageiro) {                
