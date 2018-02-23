@@ -47,7 +47,7 @@ describe("No tests? No way!",function(){
 
   // #2 
 
-  it("Should create a new user",function(done){
+  it("it should create a new user",function(done){
 
      server
     .post('/users')
@@ -62,10 +62,28 @@ describe("No tests? No way!",function(){
     });
   });
 
+   // #2.1
+  it("it should not create a new user - campos insuficientes",function(done){
+    
+         server
+        .post('/users')
+        .send({ name: "TesteMocha", cardId: "TesteMocha", password: "TesteMocha" })
+        .expect("Content-type",/json/)
+        .auth('Usuario', 'Senha')    
+        .expect(500)
+        .end(function(err,res){
+          res.status.should.equal(500);      
+          res.body.code.should.equal("error");
+          res.body.message.should.equal("Campos insuficientes");
+          done();
+        });
+      });
+    
+
 
   
   // #3 
-  it("Should delete the user",function(done){
+  it("It should delete the user",function(done){
     server
    .delete('/users')
    .send({ cardId: "TesteMocha" })
@@ -82,7 +100,7 @@ describe("No tests? No way!",function(){
  
   
   // #4
-  it("Should dont find the user",function(done){
+  it("It Should not find the user",function(done){
     server
    .delete('/users')
    .send({ cardId: "TesteMocha____1223" })
@@ -98,8 +116,8 @@ describe("No tests? No way!",function(){
 
  
   
-  // #4
-  it("Should dont return a list of debts by user",function(done){
+  // #5
+  it("It Should not return a list of debts by user",function(done){
     server
    .get('/debits?cardId=Card03')   
    .expect("Content-type",/json/)
@@ -115,8 +133,8 @@ describe("No tests? No way!",function(){
 
  
   
-  // #5
-  it("Should dont return a list by date",function(done){
+  // #6
+  it("It Should return a list by date",function(done){
     server
    .get('/debits?initialDate=2016-01-01&finalDate=2018-10-01')   
    .expect("Content-type",/json/)
@@ -130,7 +148,52 @@ describe("No tests? No way!",function(){
  });
 
 
+   
+  // #6
+  it("It Should create a new debit",function(done){
+    server
+   .post('/debits')   
+   .send({ cardId: "Card03", code: "1510", value: -1})
+   .expect("Content-type",/json/)
+   .auth('Usuario', 'Senha')    
+   .expect(200)
+   .end(function(err,res){
+     res.status.should.equal(200);      
+     res.body.code.should.equal("success");
+     done();
+   });
+  });
 
+     
+  // #6
+  it("It Should not create a new debit  - Campos insuficientes",function(done){
+    server
+   .post('/debits')   
+   .send({ cardId: "Card03", value: 0})
+   .expect("Content-type",/json/)
+   .auth('Usuario', 'Senha')    
+   .expect(200)
+   .end(function(err,res){
+     res.status.should.equal(500);      
+     res.body.message.should.equal("Campos insuficientes");
+     done();
+  });
+  });
+
+    // #6
+    it("It Should not create a new debit  - Sem credito",function(done){
+      server
+     .post('/debits')   
+     .send({ cardId: "Card03", code: "1510", value: 100000000})
+     .expect("Content-type",/json/)
+     .auth('Usuario', 'Senha')    
+     .expect(200)
+     .end(function(err,res){
+       res.status.should.equal(500);      
+       res.body.message.should.equal("Saldo insuficiente");
+       done();
+    });
+    });
 
 
 });

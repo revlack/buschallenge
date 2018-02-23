@@ -9,7 +9,7 @@ module.exports.processaHome = (req, res) => {
         res.end(obj);
     } catch (error) {
         // log register.
-        console.log(`checklist-busca-todos: ${error.message}`);
+        console.log(`Erro Home: ${error.message}`);
         // response message.
         resHttp.code = "error";
         resHttp.statusCode = 500;   
