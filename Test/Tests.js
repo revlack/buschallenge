@@ -80,6 +80,40 @@ describe("No tests? No way!",function(){
       });
     
 
+  // #2.2
+  it("it should not create a new user - email ja registrado",function(done){
+    
+         server
+        .post('/users')
+        .send({ name: "TesteMocha", email: "teste@gmail.com", cardId: "TesteMocha", password: "TesteMocha" })
+        .expect("Content-type",/json/)
+        .auth('Usuario', 'Senha')    
+        .expect(500)
+        .end(function(err,res){
+          res.status.should.equal(500);      
+          res.body.code.should.equal("error");
+          res.body.message.should.equal("Usuário já cadastrado para esse card ou e-mail");
+          done();
+        });
+      });
+
+
+   it("it should not create a new user - cardId ja registrado",function(done){        
+             server
+            .post('/users')
+            .send({ name: "TesteMocha", email: "teste2@gmail.com", cardId: "Card03", password: "TesteMocha" })
+            .expect("Content-type",/json/)
+            .auth('Usuario', 'Senha')    
+            .expect(500)
+            .end(function(err,res){
+              res.status.should.equal(500);      
+              res.body.code.should.equal("error");
+              res.body.message.should.equal("Usuário já cadastrado para esse card ou e-mail");
+              done();
+            });
+          });
+        
+    
 
   
   // #3 
